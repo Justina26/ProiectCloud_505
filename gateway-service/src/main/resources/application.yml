@@ -1,0 +1,27 @@
+server:
+  port: ${GATEWAY_SERVICE_PORT:8080}
+
+config:
+  service:
+    itemService:
+      host: ${ITEM_SERVICE_HOST:http://localhost:8081}
+      endpoints:
+        items: "/items"
+        categories: "/items/categories"
+        singleItem: "/items/{itemId}"
+        updateItem: "/items/update"
+    orderService:
+      host: ${ORDER_SERVICE_HOST:http://localhost:8082}
+      endpoints:
+        orders: "/orders"
+        orderedItems: "/orders/ordered-items"
+    shoppingCartService:
+      host: ${SHOPPING_CART_SERVICE_HOST:http://localhost:8083}
+      endpoints:
+        shoppingCart: "/shopping-cart"
+        shoppingCartItems: "/shopping-cart/items/{userId}"
+        clearShoppingCart: "/shopping-cart/clear/{userId}"
+
+
+
+
