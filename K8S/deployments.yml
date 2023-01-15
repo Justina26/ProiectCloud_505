@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-service
+spec:
+  selector:
+    matchLabels:
+      app: gateway-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gateway-service
+    spec:
+      containers:
+        - name: gateway-service
+          image: octaviantudor/gateway-service:latest
+          env:
+            - name: ITEM_SERVICE_HOST
+              value: http://items-service:8080
+            - name: ORDER_SERVICE_HOST
+              value: http://orders-service:8080
+            - name: SHOPPING_CART_SERVICE_HOST
+              value: http://shopping-cart-service:8080
+            - name: GATEWAY_SERVICE_PORT
+              value: "8080"
+
+---
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: items-service
+spec:
+  selector:
+    matchLabels:
+      app: items-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: items-service
+    spec:
+      containers:
+        - name: items-service
+          image: octaviantudor/items-service:latest
+          env:
+            - name: ITEMS_DB_URL
+              value: jdbc:mysql://database/items_database
+            - name: ITEMS_DB_PASSWORD
+              value: password
+            - name: ITEMS_SERVICE_PORT
+              value: "8080"
+
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-service
+spec:
+  selector:
+    matchLabels:
+      app: orders-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: orders-service
+    spec:
+      containers:
+        - name: orders-service
+          image: octaviantudor/orders-service:latest
+          env:
+            - name: ORDERS_DB_URL
+              value: jdbc:mysql://database/orders_database
+            - name: ORDERS_DB_PASSWORD
+              value: password
+            - name: ORDERS_SERVICE_PORT
+              value: "8080"
+
+
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shopping-cart-service
+spec:
+  selector:
+    matchLabels:
+      app: shopping-cart-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: shopping-cart-service
+    spec:
+      containers:
+        - name: shopping-cart-service
+          image: octaviantudor/shopping-cart-service:latest
+          env:
+            - name: SHOPPING_CART_DB_URL
+              value: jdbc:mysql://database/shopping_cart_database
+            - name: SHOPPING_CART_DB_PASSWORD
+              value: password
+            - name: SHOPPING_CART_SERVICE_PORT
+              value: "8080"
